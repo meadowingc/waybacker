@@ -3,16 +3,31 @@
 
 <head>
     <title>Waybacker</title>
+    <link rel="stylesheet" href="https://unpkg.com/chota@latest">
 </head>
 
 <body>
-    <h1>List of websites:</h1>
-    <ul>
-        {{range .URLs}}
-        <li>{{.}}</li>
-        {{end}}
-    </ul>
-    <p>Want to add your website to the list? <a href="https://meadow.bearblog.dev/mailbox/">Send me an email</a>!</p>
+    <main class="container">
+        <h1 style="margin-top: 1em;">Waybacker!</h1>
+        <p>
+            Hi! You've stumbled on <i>Waybacker</i>. This is a service that I'm
+            running that will crawl each of the websites below and, if there are any
+            changes since last crawl, it will request the <a target="_blank"
+            href="https://web.archive.org/">Wayback Machine</a> to archive them. 
+        </p>
+        <p>
+            If you want me to add (or remove) your website to this service, so that
+            it is periodically archived to the Wayback Machine then feel free to <a
+            href="https://meadow.bearblog.dev/mailbox/">send me an email</a>!
+        </p>
+
+        <h2>List of websites:</h2>
+        <ul>
+            {{range .URLs}}
+            <li><a target="_blank" href="{{.}}">{{.}}</a></li>
+            {{end}}
+        </ul>
+    </main>
 </body>
 
 </html>
