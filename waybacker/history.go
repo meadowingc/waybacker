@@ -7,8 +7,11 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"net/url"
 	"os"
+	"path"
 	"regexp"
+	"strings"
 )
 
 const recordFile = "records.json"
@@ -85,13 +88,35 @@ func updateHashRecord(url, newHash string) error {
 	return json.NewEncoder(file).Encode(records)
 }
 
-func RunIfChanged(url string, callback func() error) error {
-	newHash, err := fetchAndHash(url)
+func RunIfChanged(link string, callback func() error) error {
+	// Parse URL
+	u, err := url.Parse(link)
 	if err != nil {
 		return err
 	}
 
-	storedHash, err := getStoredHash(url)
+	// Normalize URL
+	u.Scheme = strings.ToLower(u.Scheme)
+	u.Host = strings.ToLower(u.Host)
+	u.Path = path.Clean(u.Path)
+
+	// Remove www
+	u.Host = strings.TrimPrefix(u.Host, "www.")
+
+	// Remove default port
+	if (u.Scheme == "http" && u.Port() == "80") || (u.Scheme == "https" && u.Port() == "443") {
+		u.Host = u.Hostname()
+	}
+
+	// Remove trailing slash
+	link = strings.TrimRight(u.String(), "/")
+
+	newHash, err := fetchAndHash(link)
+	if err != nil {
+		return err
+	}
+
+	storedHash, err := getStoredHash(link)
 	if err != nil {
 		return err
 	}
@@ -101,7 +126,7 @@ func RunIfChanged(url string, callback func() error) error {
 			return err
 		}
 
-		if err := updateHashRecord(url, newHash); err != nil {
+		if err := updateHashRecord(link, newHash); err != nil {
 			return err
 		}
 	}
