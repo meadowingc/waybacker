@@ -22,6 +22,8 @@ func archivePage(pageUrl string, config *site.Config) {
 			var resp *http.Response
 			var err error
 
+			log.Printf("About to send to Wayback Machine: %v\n", link)
+
 			for i := 0; i < 10; i++ { // Retry up in case of timeout
 				resp, err = waybacker.SendToWaybackMachine(link, config.AccessKey, config.SecretKey)
 				if err != nil {
