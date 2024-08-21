@@ -11,6 +11,7 @@ func SendToWaybackMachine(targetURL, accessKey, accessSecret string) (*http.Resp
 	data := url.Values{}
 	data.Set("url", targetURL)
 	data.Set("capture_all", "1")
+	data.Set("capture_outlinks", "1")
 	data.Set("delay_wb_availability", "1")
 
 	req, err := http.NewRequest("POST", waybackURL, strings.NewReader(data.Encode()))
