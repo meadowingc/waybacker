@@ -12,6 +12,7 @@ func SendToWaybackMachine(targetURL, accessKey, accessSecret string) (*http.Resp
 	data.Set("url", targetURL)
 	data.Set("capture_all", "1")
 	data.Set("capture_outlinks", "1")
+	data.Set("skip_first_archive", "1")
 	data.Set("delay_wb_availability", "1")
 	data.Set("if_not_archived_within", "20d")
 

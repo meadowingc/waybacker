@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"encoding/xml"
 	"io"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -43,6 +44,8 @@ func fetchAndParseSitemap(url string) ([]string, error) {
 }
 
 func GetSitemapURLs(url string) ([]string, error) {
+	log.Printf("Getting sitemap URLs for %v\n", url)
+
 	url = strings.TrimSuffix(url, "/")
 	var sitemapUrls []string
 

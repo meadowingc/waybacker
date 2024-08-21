@@ -17,6 +17,8 @@ func archivePage(pageUrl string, config *site.Config) {
 		return
 	}
 
+	log.Printf("Found %v links in sitemap for %v\n", len(linksInSite), pageUrl)
+
 	for _, link := range linksInSite {
 		archiveErr := waybacker.RunIfChanged(link, func() error {
 			var resp *http.Response
@@ -63,7 +65,9 @@ func StartMonitorProcess(config *site.Config) {
 		log.Println("Starting monitor process")
 
 		for _, url := range config.URLs {
+			log.Printf("Starting archiving for page: %v\n", url)
 			archivePage(url, config)
+			log.Printf("Finished archiving for page: %v\n", url)
 		}
 
 		time.Sleep(time.Duration(config.SleepDays) * 24 * time.Hour)
