@@ -3,6 +3,7 @@
 # run forever, even if we fail
 while true; do
     git pull
-    go run .
+    go build -tags release -o waybacker
+    ./waybacker
     sleep 1
 done
